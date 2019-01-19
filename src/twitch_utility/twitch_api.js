@@ -10,46 +10,56 @@ module.exports = {
     fetchStreamData: fetchStreamData
 }
 
-/**
+/** 
  * 
- * @param {*} param0 
+ * @param {string[]} streamIdentifiers Identifiers for stream (e.g. login or id of twitch user)
+ * @param {function (Object): void} callback callback to handle response from twitch
+ * @returns {Object} Returns reponse when no callback is given
  */
-async function fetchUserData(params, callback)
-{
+async function fetchUserData(streamIdentifiers, callback) {
     let request = 'users'; //API endpoint for twitch
 
     //If ID is given use the ID
-    if (params.id) {
-        request = addParam(request, ["id", params.id]);
-      
-    } else if (params.login) { //When only name is given, use the name
-        request = addParam(request, ["login", params.login]);
+    if (streamIdentifiers.id) {
+        request = addParam(request, ["id", streamIdentifiers.id]);
+
+    } else if (streamIdentifiers.login) { //When only name is given, use the name
+        request = addParam(request, ["login", streamIdentifiers.login]);
     } else {
         throw new Error('No identifier for user given (e.g. user_id or user_login)');
     }
 
-    return await fetchData(request, callback);
+    //Use either callback or return response
+    if (callback && typeof callback == 'function') {
+        return await fetchData(request, callback);
+    } else {
+        return await fetchData(request);
+    }
 }
 
 /** 
  * 
- * @param {Object} params
- * @callback callback
-*/
-async function fetchStreamData(params, callback)
-{
+ * @param {string[]} streamIdentifiers Identifiers for stream (e.g. login or id of twitch user)
+ * @param {function (Object): void} callback callback to handle response from twitch
+ * @returns {Object} Returns reponse when no callback is given
+ */
+async function fetchStreamData(streamIdentifiers, callback) {
     let request = 'streams'; //API endpoint for twitch
 
     //If ID is given use the ID
-    if (params.id) {
-        request = addParam(request, ["user_id", params.id]);
-    } else if (params.login) { //When only name is given, use the name
-        request = addParam(request, ["user_login", params.login]);
+    if (streamIdentifiers.id) {
+        request = addParam(request, ["user_id", streamIdentifiers.id]);
+    } else if (streamIdentifiers.login) { //When only name is given, use the name
+        request = addParam(request, ["user_login", streamIdentifiers.login]);
     } else {
         throw new Error('No identifier for user given (e.g. id or login)');
     }
 
-    return await fetchData(request, callback);
+    if (callback && typeof callback == 'function') {
+        return await fetchData(request, callback);
+    } else {
+        return await fetchData(request);
+    }
 }
 
 /**
@@ -57,7 +67,8 @@ async function fetchStreamData(params, callback)
  * 
  * Callback for handling API response from Twitch
  * @param {string} request Request string for Twitch API
- * @callback callback function to handle response from twitch
+ * @param {function(Object):void} callback callback to handle response from twitch
+ * @returns {Object} If no callback is given, the response is returned
  */
 async function fetchData(
     request,
@@ -76,18 +87,20 @@ async function fetchData(
 
     if (callback && typeof callback == 'function') {
         callback(response);
+        return;
     } else {
-        throw new Error('No callback given');
+        return response;
     }
 }
 
 /**
  * Add parameter to existing request string
  * @param {String} request 
- * @param {Array} param Arrays that contain parameter key and value (e.g. user_login and <username>)
- */
+ * @param {string[]} param Arrays that contain paris of parameter key and value (e.g. name + <name>)
+ * @returns {string} Concatinated request string
+ * */
 function addParam(request, ...param) {
-    
+
     param.forEach((value) => {
         request += ('?' + value[0] + '=' + value[1]);
     });

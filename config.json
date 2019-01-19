@@ -4,10 +4,15 @@
     },
     "twitch": {
         "clientID": "zubs11k9u93sy1thfy9lniwvp7y5tz",
-        "twitchStreamOnlineUpdateInterval": 300000
+        "twitchStreamOnlineUpdateInterval": 3000
     },
     "discord": {
         "prefix": "p?",
-        "announceStreams": true
+        "announceStreams": true,
+        "announceChannelIDs": [
+            "488392236086591488",
+            "488392299764514816"            
+        ],
+        "announceMessage": "An alle @here! Die Prinzessin ist online auf **Twitch**! "
     }   
 }
