@@ -1,9 +1,13 @@
 {
-    "connection": {
-        
+    "permission": {
+        "integer": 3656769
     },
     "twitch": {
         "clientID": "zubs11k9u93sy1thfy9lniwvp7y5tz",
-        "twitchStreamOnlineUpdateInterval": 300
-    }    
+        "twitchStreamOnlineUpdateInterval": 300000
+    },
+    "discord": {
+        "prefix": "p?",
+        "announceStreams": true
+    }   
 }

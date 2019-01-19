@@ -3,8 +3,12 @@
  */
 
 const axios = require("axios");
-
 const config = require("../../config.json");
+
+module.exports = {
+    fetchUserData: fetchUserData,
+    fetchStreamData: fetchStreamData
+}
 
 /**
  * 
@@ -27,6 +31,11 @@ async function fetchUserData(params, callback)
     return await fetchData(request, callback);
 }
 
+/** 
+ * 
+ * @param {Object} params
+ * @callback callback
+*/
 async function fetchStreamData(params, callback)
 {
     let request = 'streams'; //API endpoint for twitch
@@ -48,7 +57,7 @@ async function fetchStreamData(params, callback)
  * 
  * Callback for handling API response from Twitch
  * @param {string} request Request string for Twitch API
- * @callback callback callback
+ * @callback callback function to handle response from twitch
  */
 async function fetchData(
     request,
@@ -90,7 +99,3 @@ function addParam(request, ...param) {
 fetchStreamData({ login: 'princesspaperplane' }, () => {
     console.log("Hello");
 });*/
-
-fetchStreamData({ login: 'princesspaperplane' }, (response) => {
-    console.log(JSON.stringify(response.data));
-});
