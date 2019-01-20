@@ -10,11 +10,18 @@ module.exports = {
     fetchStreamData: fetchStreamData
 }
 
+/**
+ * @typedef TwitchResponse
+ * @property {Object} data 
+ */
+
 /** 
+ * Get twtich API data about given user
  * 
+ * @async
  * @param {string[]} streamIdentifiers Identifiers for stream (e.g. login or id of twitch user)
  * @param {function (Object): void} callback callback to handle response from twitch
- * @returns {Object} Returns reponse when no callback is given
+ * @returns {TwitchResponse} Returns reponse when no callback is given
  */
 async function fetchUserData(streamIdentifiers, callback) {
     let request = 'users'; //API endpoint for twitch
@@ -39,9 +46,11 @@ async function fetchUserData(streamIdentifiers, callback) {
 
 /** 
  * 
+ * Get twtich API data about given streamer
+ * @async 
  * @param {string[]} streamIdentifiers Identifiers for stream (e.g. login or id of twitch user)
  * @param {function (Object): void} callback callback to handle response from twitch
- * @returns {Object} Returns reponse when no callback is given
+ * @returns {TwitchResponse} Returns reponse when no callback is given
  */
 async function fetchStreamData(streamIdentifiers, callback) {
     let request = 'streams'; //API endpoint for twitch
@@ -64,8 +73,8 @@ async function fetchStreamData(streamIdentifiers, callback) {
 
 /**
  *
- * 
  * Callback for handling API response from Twitch
+ * @async
  * @param {string} request Request string for Twitch API
  * @param {function(Object):void} callback callback to handle response from twitch
  * @returns {Object} If no callback is given, the response is returned

@@ -1,18 +1,16 @@
 {
-    "permission": {
-        "integer": 3656769
-    },
     "twitch": {
         "clientID": "zubs11k9u93sy1thfy9lniwvp7y5tz",
-        "twitchStreamOnlineUpdateInterval": 3000
+        "twitchStreamOnlineUpdateInterval": 30000
     },
     "discord": {
+        "permissionIinteger": 3656769,
         "prefix": "p?",
         "announceStreams": true,
         "announceChannelIDs": [
             "488392236086591488",
             "488392299764514816"            
         ],
-        "announceMessage": "An alle @here! Die Prinzessin ist online auf **Twitch**! "
+        "announceMessage": "An alle @/here! Die Prinzessin ist online auf **Twitch**! "
     }   
 }

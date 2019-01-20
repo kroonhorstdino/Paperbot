@@ -1,8 +1,8 @@
 const Discord = require("discord.js");
-const config = require("../../config.json");
+let config = require("../../config.json");
 
-const twitch = require("../twitch_utility/twitch.js");
-const channels = require("../discord_utility/channels.js");
+const twitch = require("../twitch/twitch.js");
+const channels = require("../discord/channels.js");
 
 let isOnline = false; //TODO ONLY FOR ONE STREAMER!
 
@@ -13,11 +13,12 @@ module.exports = {
 /**
  *  Checks if stream is online and posts announcement when it is the case
  *
+ * @async
  * @param {Discord.Client} client
  */
 async function checkStreamOnline(client) {
     let { isNowOnline, response } = await twitch.isStreamOnline({
-        login: 'sovietwomble'
+        login: 'princesspaperplane'
     });
 
     if (!isNowOnline) {
@@ -38,6 +39,7 @@ async function checkStreamOnline(client) {
         }
     }
 }
+
 /**
  *  Announces stream in channel by providing link and a message
  *

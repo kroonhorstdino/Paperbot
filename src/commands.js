@@ -1,41 +1,63 @@
 const Discord = require("discord.js");
 const ping = require("./cmds/ping.js");
+const fs = require("fs");
+const path = require("path");
 
-//TODO Automatically require all files
+module.exports = class Commands {
 
-module.exports = {
-
-    //All valid command files are stored in here
-    commandFiles: [],
+    constructor() {
+        this.commandFiles = [];
+        collectCommandFiles();
+    }
 
     /**
-     * Returns the command file of the command specified
-     *
-     * @param {string} cmdName Name of the root command
+     * Handle command inputs  
+     * 
+     * @param {Discord.Message} cmd
      */
-    getCommandFile: (cmdName) => {
-        throw new Error("Not yet implemented");
-    },
-
-    /**
-     * Evaluates if a string is a command
-     *
-     * @param {string} cmdString Entire string of command
-     */
-    isCommand: (cmdString) => {
-
-    },
-    /**
-    *
-    *
-    * @param {Discord.Message} cmd
-    */
-    handleCommand: (cmd) => { //TODO integrate isCommand and getCommandFile
+    handleCommand(cmd) { //TODO integrate isCommand and getCommandFile
         switch (cmd.content) {
             case "p?ping":
                 ping.execute(cmd);
                 break;
             default:
+                break;
         }
-    },
+    }
+
+    /**
+     * Returns the command file of the command specified
+     *
+     * @private
+     * @param {string} cmdName Name of the root command
+     */
+    getCommandFile(cmdName) {
+        throw new Error("Not yet implemented");
+    }
+
+    /**
+     * Evaluates if a string is a command
+     *
+     * @param {string} cmdString Entire string of command
+     * @returns {Boolean} is a command?
+     */
+    isCommand(cmdString) {
+        return cmdString.startsWith(config.prefix);
+    }
+
+    /**
+     * @private
+     * Collect all command files and put them into accesible array *
+     */
+    collectCommandFiles() {
+
+        let commandDir = global.__basedir + "/src/cmds/";
+
+        let fileNames = fs.readdirSync(commandDir);
+
+        fileNames.forEach(fileName => {
+            let filePath = commandDir + fileName;
+            this.commandFiles.push(require(filePath));
+        });
+    }
 }

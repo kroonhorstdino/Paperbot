@@ -1,12 +1,8 @@
-const Discord = require('discord.js');
 const twitch_api = require("./twitch_api.js");
-const config = require("../../config.json");
-const channels = require("../discord_utility/channels.js");
 
 let isPrincessOnline = true; //TODO ONLY FOR ONE STREAMER!
 
 module.exports = {
-    checkPrincessOnline: testTwitchOnline,
     isStreamOnline: isStreamOnline,
 }
 
@@ -17,8 +13,9 @@ module.exports = {
  */
 
 /**
- *
- *
+ * Checks if stream is online
+ * 
+ * @async 
  * @param {Object} streamIdentifiers Possible identifiers for stream
  * @param {string} streamIdentifiers.login Login name of streamer
  * @param {string} streamIdentifiers.id ID of streamer
@@ -34,11 +31,13 @@ async function isStreamOnline(streamIdentifiers) {
         year: 'numeric',
         month: 'numeric',
         day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
         hourCycle: 'h24',
     };
 
-    console.log("Status checked at: " + date.toLocaleDateString('de-DE', options) +
-        ", " + date.getHours() + ":" + date.getMinutes());
+    console.log(`Status checked at: ${date.toLocaleDateString('de-DE', options)}`);
 
     let response = await twitch_api.fetchStreamData(streamIdentifiers);
 
@@ -53,6 +52,8 @@ async function isStreamOnline(streamIdentifiers) {
     return {isNowOnline, response};
 }
 
+
+/*
 function testTwitchOnline(client) {
     twitch_api.fetchStreamData({
         login: 'sovietwomble'
@@ -95,4 +96,4 @@ function handleTestResponse(client, response) {
             isPrincessOnline = true;
         }
     }
-}
+}*/
