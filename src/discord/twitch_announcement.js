@@ -1,22 +1,23 @@
 const Discord = require("discord.js");
-let config = require("../../config.json");
+const Emitter = require("events");
 
 const twitch = require("../twitch/twitch.js");
 const channels = require("../discord/channels.js");
 
+const config = require("../../config.json");
 let isOnline = false; //TODO ONLY FOR ONE STREAMER!
 
 module.exports = {
-    checkStreamOnline: checkStreamOnline
+    startCheckStreamStatus: startCheckStreamStatus,
+    checkStreamStatus: checkStreamStatus
 }
 
 /**
- *  Checks if stream is online and posts announcement when it is the case
+ * Checks if stream is online and posts announcement when it is the case
  *
  * @async
- * @param {Discord.Client} client
  */
-async function checkStreamOnline(client) {
+async function checkStreamStatus() {
     let { isNowOnline, response } = await twitch.isStreamOnline({
         login: 'princesspaperplane'
     });
@@ -35,22 +36,43 @@ async function checkStreamOnline(client) {
             console.log(response);
             isOnline = true;
 
-            announceStream(client, response);
+            announceStream(response);
         }
     }
 }
 
 /**
+ * Starts regular online status updates for streamers
+ *
+ * @returns {NodeJS.Timeout} coroutineID ID of running coroutine
+ */
+function startCheckStreamStatus() {
+
+    global._twitchEmitter = new
+
+    let coroutineID;    
+    console.log("Now updating twitch stream statusses");
+
+    if (process.argv.includes("--announceonce")) { //--once denotes one time test of function
+        console.log("Testing once");
+    } else {
+        coroutineID = setInterval(twitchAnnouncement.checkStreamOnline, config.twitch.twitchStreamStatusUpdateInterval);
+    }
+    
+    checkStreamStatus();
+    return coroutineID;
+}
+
+/**
  *  Announces stream in channel by providing link and a message
  *
- * @param {Discord.Client} client
  * @param {Object} response
  */
-function announceStream(client, response) {
+function announceStream(response) {
     let streamerURL = `https://www.twitch.tv/${response.data.data[0].user_name}`;
     let message = config.discord.announceMessage;
     
-    channels.applyToChannels(client, config.discord.announceChannelIDs, channel => {
+    channels.applyToChannels(config.discord.announceChannelIDs, channel => {
         channel.send(message + streamerURL);
     });
 }

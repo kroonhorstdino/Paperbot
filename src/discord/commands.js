@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const ping = require("./cmds/ping.js");
+const ping = require("../cmds/ping.js");
 const fs = require("fs");
 const path = require("path");
 

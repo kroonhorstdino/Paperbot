@@ -3,7 +3,7 @@ const twitch_api = require("./twitch_api.js");
 let isPrincessOnline = true; //TODO ONLY FOR ONE STREAMER!
 
 module.exports = {
-    isStreamOnline: isStreamOnline,
+    isStreamOnline: isStreamOnline
 }
 
 /**
@@ -52,18 +52,17 @@ async function isStreamOnline(streamIdentifiers) {
     return {isNowOnline, response};
 }
 
-
 /*
-function testTwitchOnline(client) {
+function testTwitchOnline() {
     twitch_api.fetchStreamData({
         login: 'sovietwomble'
     }).then(response => {
         console.log(response);
-        handleTestResponse(client, response);
+        handleTestResponse(response);
     });
 }
 
-function handleTestResponse(client, response) {
+function handleTestResponse( response) {
 
     let date = new Date(Date.now());
     var options = {
@@ -84,7 +83,7 @@ function handleTestResponse(client, response) {
             console.log(response);
             isPrincessOnline = false;
 
-            channels.applyToChannels(client, config.discord.announceChannelIDs, channel => {
+            channels.applyToChannels(config.discord.announceChannelIDs, channel => {
                 channel.send("Test");
             });
         }
