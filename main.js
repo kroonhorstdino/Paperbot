@@ -16,6 +16,8 @@ let coroutineID;
 global.__basedir = __dirname;
 
 global._client.on('ready', () => {
+
+    twitchAnnouncement.startCheckStreamStatus();
     console.log(`Connected under name ${global._client.user.tag}`);
 });
 

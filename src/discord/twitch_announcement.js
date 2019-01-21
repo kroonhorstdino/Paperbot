@@ -9,8 +9,28 @@ let isOnline = false; //TODO ONLY FOR ONE STREAMER!
 
 module.exports = {
     startCheckStreamStatus: startCheckStreamStatus,
-    checkStreamStatus: checkStreamStatus
 }
+
+/**
+ * Starts regular online status updates for streamers
+ *
+ * @returns {NodeJS.Timeout} coroutineID ID of running coroutine
+ */
+function startCheckStreamStatus() {
+
+    let coroutineID;
+    console.log("Now updating twitch stream statusses");
+
+    if (process.argv.includes("--announceonce")) { //--once denotes one time test of function
+        console.log("Testing once");
+    } else {
+        coroutineID = setInterval(checkStreamStatus, config.twitch.twitchStreamStatusUpdateInterval);
+    }
+
+    checkStreamStatus();
+    return coroutineID;
+}
+
 
 /**
  * Checks if stream is online and posts announcement when it is the case
@@ -19,7 +39,7 @@ module.exports = {
  */
 async function checkStreamStatus() {
     let { isNowOnline, response } = await twitch.isStreamOnline({
-        login: 'princesspaperplane'
+        login: 'aspen'
     });
 
     if (!isNowOnline) {
@@ -39,28 +59,6 @@ async function checkStreamStatus() {
             announceStream(response);
         }
     }
-}
-
-/**
- * Starts regular online status updates for streamers
- *
- * @returns {NodeJS.Timeout} coroutineID ID of running coroutine
- */
-function startCheckStreamStatus() {
-
-    global._twitchEmitter = new
-
-    let coroutineID;    
-    console.log("Now updating twitch stream statusses");
-
-    if (process.argv.includes("--announceonce")) { //--once denotes one time test of function
-        console.log("Testing once");
-    } else {
-        coroutineID = setInterval(twitchAnnouncement.checkStreamOnline, config.twitch.twitchStreamStatusUpdateInterval);
-    }
-    
-    checkStreamStatus();
-    return coroutineID;
 }
 
 /**

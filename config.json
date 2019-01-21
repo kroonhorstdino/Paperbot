@@ -8,8 +8,7 @@
         "prefix": "p?",
         "announceStreams": true,
         "announceChannelIDs": [
-            "488392236086591488",
-            "488392299764514816"            
+            "488392236086591488"        
         ],
         "announceMessage": "An alle @/here! Die Prinzessin ist online auf **Twitch**! "
     }   
