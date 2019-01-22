@@ -23,11 +23,18 @@ global._client.on('ready', () => {
 
 global._client.on('message', (msg) => {
     //commands.handleCommand(msg);
+}).catch(error => {
+    console.error(error);
 });
 
 global._client.on('disconnect', (event) => {
     console.warn("DISCONNECTED FROM DISCORD SERVERS!");
     process.exit(400);
+});
+
+global._client.on('error', (error) => {
+    console.error(error);
+    console.log("Business as usual then...");
 });
 
 

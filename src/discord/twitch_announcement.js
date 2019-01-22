@@ -39,7 +39,7 @@ function startCheckStreamStatus() {
  */
 async function checkStreamStatus() {
     let { isNowOnline, response } = await twitch.isStreamOnline({
-        login: 'aspen'
+        login: 'princesspaperplane'
     });
 
     if (!isNowOnline) {
