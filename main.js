@@ -1,3 +1,5 @@
+const chalk = require("chalk");
+
 const Discord = require("discord.js");
 global._client = new Discord.Client();
 
@@ -15,10 +17,6 @@ const commands = require("./src/discord/commands.js");
 const TwitchAnnouncement = require("./src/discord/twitch_announcement.js");
 const announcer = new TwitchAnnouncement();
 
-
-
-
-
 /**
  * @type {NodeJS.Timeout}
  */
@@ -28,9 +26,10 @@ let coroutineID;
 global.__basedir = __dirname;
 
 global._client.on('ready', () => {
-
-    announcer.initCheckStreamStatus();
     console.log(`Connected under name ${global._client.user.tag}`);
+
+    //Check streamer statusses
+    announcer.initCheckStreamStatus();
 });
 
 global._client.on('message', (msg) => {
@@ -47,6 +46,12 @@ global._client.on('error', (error) => {
     console.log("Business as usual then...");
 });
 
+//When pm2 wants to shutdown the process
+process.on('SIGINT', function () {
+    db.stop(function (err) {
+        process.exit(err ? 1 : 0);
+    });
+});
 
 global._client.login(secret.discord.token);
 console.log("Logged in");

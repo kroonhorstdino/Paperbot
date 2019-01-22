@@ -1,0 +1,9 @@
+{
+    "apps": [{
+        "name": "paperbot_production",
+        "script": "main.js",
+        "listen_timeout": 120000,
+        "max_memory_restart": "200M",
+        "cron_restart": "0 5 * * *"
+    }]
+}

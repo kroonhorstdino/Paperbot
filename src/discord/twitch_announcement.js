@@ -1,3 +1,5 @@
+const chalk = require("chalk");
+
 const Discord = require("discord.js");
 const Emitter = require("events");
 
@@ -82,16 +84,16 @@ module.exports = class TwitchAnnouncement {
             login: 'princesspaperplane'
         });
 
-        if (!isNowOnline) { //Streamer was not online at last check
+        if (!isNowOnline) { //Streamer now online
 
             if (this.isOnline) { //Went online
                 console.log("PrincessPaperplane ist offline gegangen!");
                 console.log(response);
                 this.isOnline = false;
 
-                this.changeStreamCheckStatusInterval(config.twitch.updateIntervalWhenOnline);
+                this.changeStreamCheckStatusInterval(config.twitch.updateIntervalWhenOffline);
             }
-        } else { //When streamer was online at last check
+        } else { //Streamer now online
             if (!this.isOnline) { //Went offline
                 console.log("PrincessPaperplane ist online gegangen!");
                 console.log(response);
@@ -99,7 +101,7 @@ module.exports = class TwitchAnnouncement {
 
                 await this.announceStream(response);
 
-                this.changeStreamCheckStatusInterval(config.twitch.updateIntervalWhenOffline);
+                this.changeStreamCheckStatusInterval(config.twitch.updateIntervalWhenOnline);
             }
         }
     }
