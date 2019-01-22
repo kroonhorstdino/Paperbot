@@ -1,7 +1,8 @@
 {
     "twitch": {
         "clientID": "zubs11k9u93sy1thfy9lniwvp7y5tz",
-        "twitchStreamStatusUpdateInterval": 30000
+        "updateIntervalWhenOffline": 30000,
+        "updateIntervalWhenOnline": 60000
     },
     "discord": {
         "permissionIinteger": 3656769,

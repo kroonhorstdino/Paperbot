@@ -19,7 +19,7 @@ module.exports = {
  * @param {Object} streamIdentifiers Possible identifiers for stream
  * @param {string} streamIdentifiers.login Login name of streamer
  * @param {string} streamIdentifiers.id ID of streamer
- * @returns {isStreamOnlineReturn} If stream is online or not and the API response
+ * @returns {Boolean, Object} If stream is online or not and the API response
  */
 async function isStreamOnline(streamIdentifiers) {
 

@@ -1,11 +1,23 @@
 const Discord = require("discord.js");
 global._client = new Discord.Client();
 
-const commands = require("./src/discord/commands.js");
-const twitchAnnouncement = require("./src/discord/twitch_announcement.js");
-
+/**
+ * JSON FILES
+ */
 const config = require('./config.json');
 const secret = require('./secret.json');
+
+/**
+ * BOT MODULES
+ */
+const commands = require("./src/discord/commands.js");
+
+const TwitchAnnouncement = require("./src/discord/twitch_announcement.js");
+const announcer = new TwitchAnnouncement();
+
+
+
+
 
 /**
  * @type {NodeJS.Timeout}
@@ -17,14 +29,12 @@ global.__basedir = __dirname;
 
 global._client.on('ready', () => {
 
-    twitchAnnouncement.startCheckStreamStatus();
+    announcer.initCheckStreamStatus();
     console.log(`Connected under name ${global._client.user.tag}`);
 });
 
 global._client.on('message', (msg) => {
     //commands.handleCommand(msg);
-}).catch(error => {
-    console.error(error);
 });
 
 global._client.on('disconnect', (event) => {

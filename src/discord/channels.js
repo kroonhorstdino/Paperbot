@@ -13,7 +13,7 @@ module.exports = {
  * @param {string[]} channelIDs IDs of channels 
  * @param {function(Discord.TextChannel):void} callback called when done
  */
-function applyToChannels(channelIDs, callback, ...params) {
+async function applyToChannels(channelIDs, callback, ...params) {
     let channels = getChannels(channelIDs);
 
     channels.forEach(channel => {
