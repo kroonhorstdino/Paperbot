@@ -1,4 +1,5 @@
 const chalk = require("chalk");
+const autoBind = require('auto-bind');
 
 const Discord = require("discord.js");
 const Emitter = require("events");
@@ -11,6 +12,8 @@ const config = require("../../config.json");
 module.exports = class TwitchAnnouncement {
 
     constructor() {
+        autoBind(this);
+
         /**
          *
          *@type {Boolean}
@@ -100,7 +103,7 @@ module.exports = class TwitchAnnouncement {
                 console.log(response);
                 this.isOnline = true;
 
-                this.announceStream(response);
+                await this.announceStream(response);
 
                 this.changeStreamCheckStatusInterval(config.twitch.updateIntervalWhenOnline);
             }

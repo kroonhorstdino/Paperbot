@@ -50,7 +50,6 @@ async function fetchUserData(streamIdentifiers, callback) {
  * @async 
  * @param {string[]} streamIdentifiers Identifiers for stream (e.g. login or id of twitch user)
  * @param {function (Object): void} callback callback to handle response from twitch
- * @returns {TwitchResponse} Returns reponse when no callback is given
  */
 async function fetchStreamData(streamIdentifiers, callback) {
     let request = 'streams'; //API endpoint for twitch
