@@ -1,6 +1,5 @@
+const chalk = require("chalk");
 const twitch_api = require("./twitch_api.js");
-
-let isPrincessOnline = true; //TODO ONLY FOR ONE STREAMER!
 
 module.exports = {
     isStreamOnline: isStreamOnline

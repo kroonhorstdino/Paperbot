@@ -11,7 +11,14 @@ module.exports = {
         msg.channel.send("@here PONG! 🏓");
     },
 
-    help: () => {
+    aliases: [
+        "ping",
+        "p",
+        "pg",
+    ],
 
+    isEnabled: true,
+
+    help: () => {
     },
 }

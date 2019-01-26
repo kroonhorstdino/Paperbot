@@ -1,3 +1,5 @@
+/** @type {string} */
+global.__basedir = __dirname;
 const chalk = require("chalk");
 
 const Discord = require("discord.js");
@@ -12,7 +14,8 @@ const secret = require('./secret.json');
 /**
  * BOT MODULES
  */
-const commands = require("./src/discord/commands.js");
+const Commands = require("./src/discord/commands.js");
+const commands = new Commands();
 
 const TwitchAnnouncement = require("./src/discord/twitch_announcement.js");
 const announcer = new TwitchAnnouncement();
@@ -22,9 +25,6 @@ const announcer = new TwitchAnnouncement();
  */
 let coroutineID;
 
-/** @type {string} */
-global.__basedir = __dirname;
-
 global._client.on('ready', () => {
     console.log(`Connected under name ${global._client.user.tag}`);
 
@@ -33,7 +33,7 @@ global._client.on('ready', () => {
 });
 
 global._client.on('message', (msg) => {
-    //commands.handleCommand(msg);
+    commands.handleCommand(msg);
 });
 
 global._client.on('disconnect', (event) => {
@@ -48,10 +48,9 @@ global._client.on('error', (error) => {
 
 //When pm2 wants to shutdown the process
 process.on('SIGINT', function () {
-    db.stop(function (err) {
-        process.exit(err ? 1 : 0);
-    });
+    announcer.stopStreamCheckStatus();
+    console.log("Bot stopped by outside program");
 });
 
 global._client.login(secret.discord.token);
-console.log("Logged in");
+console.log(chalk.greenBright('Bot succesfully logged in!'));

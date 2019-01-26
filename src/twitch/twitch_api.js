@@ -3,7 +3,7 @@
  */
 
 const axios = require("axios");
-const config = require("../../config.json");
+const secret = require("../../secret.json");
 
 module.exports = {
     fetchUserData: fetchUserData,
@@ -83,7 +83,7 @@ async function fetchData(
     request,
     callback
 ) {
-    const clientID = config.twitch.clientID.toString();
+    const clientID = secret.twitch.clientID.toString();
     const api_endpoint = 'https://api.twitch.tv/helix/' + request;
 
     let response = await axios.get(api_endpoint, {

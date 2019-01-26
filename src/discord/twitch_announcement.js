@@ -29,6 +29,7 @@ module.exports = class TwitchAnnouncement {
 
         if (process.argv.includes("--announceonce")) { //--once denotes one time test of function
             console.log("Testing once");
+            this.checkStreamStatus();
         } else {
             this.startStreamCheckStatus(config.twitch.updateIntervalWhenOffline);
         }
@@ -81,7 +82,7 @@ module.exports = class TwitchAnnouncement {
             isNowOnline,
             response
         } = await twitch.isStreamOnline({
-            login: 'princesspaperplane'
+            login: 'xqcow'
         });
 
         if (!isNowOnline) { //Streamer now online
@@ -99,7 +100,7 @@ module.exports = class TwitchAnnouncement {
                 console.log(response);
                 this.isOnline = true;
 
-                await this.announceStream(response);
+                this.announceStream(response);
 
                 this.changeStreamCheckStatusInterval(config.twitch.updateIntervalWhenOnline);
             }
@@ -118,7 +119,7 @@ module.exports = class TwitchAnnouncement {
         let message = config.discord.announceMessage;
 
         await channels.applyToChannels(config.discord.announceChannelIDs, channel => {
-            channel.send(message + streamerURL);
+            channel.send(message + " " + streamerURL);
         });
     }
 }

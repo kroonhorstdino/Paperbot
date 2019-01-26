@@ -1,6 +1,5 @@
 {
     "twitch": {
-        "clientID": "zubs11k9u93sy1thfy9lniwvp7y5tz",
         "updateIntervalWhenOffline": 30000,
         "updateIntervalWhenOnline": 60000
     },
@@ -9,8 +8,8 @@
         "prefix": "p?",
         "announceStreams": true,
         "announceChannelIDs": [
-            "488392236086591488"        
+            "488392236086591488"
         ],
-        "announceMessage": "An alle @/here! Die Prinzessin ist online auf **Twitch**! "
+        "announceMessage": "An alle @here! princesspaperplane ist wieder online auf Twitch!"
     }   
 }
