@@ -25,16 +25,19 @@ module.exports = {
  */
 async function fetchUserData(streamIdentifiers, callback) {
     let request = 'users'; //API endpoint for twitch
+    let requestParams = [];
 
-    //If ID is given use the ID
-    if (streamIdentifiers.id) {
-        request = addParam(request, ["id", streamIdentifiers.id]);
-
-    } else if (streamIdentifiers.login) { //When only name is given, use the name
-        request = addParam(request, ["login", streamIdentifiers.login]);
-    } else {
-        throw new Error('No identifier for user given (e.g. user_id or user_login)');
+    if (streamIdentifiers.length < 1) {
+        throw new Error('No users given');
     }
+
+    //Add login to streamer names so request can be built properly
+    streamIdentifiers.forEach(streamer => {
+        requestParams[requestParams.length] = ["user_login", streamer];
+        // --> [["login","princesspaperplane"],["login","dirtymerry"]]
+    });
+
+    request = addParam(request, requestParams);
 
     //Use either callback or return response
     if (callback && typeof callback == 'function') {
@@ -48,20 +51,24 @@ async function fetchUserData(streamIdentifiers, callback) {
  * 
  * Get twtich API data about given streamer
  * @async 
- * @param {string[]} streamIdentifiers Identifiers for stream (e.g. login or id of twitch user)
+ * @param {string[]} streamIdentifiers Identifiers for stream (["name","anothername"])
  * @param {function (Object): void} callback callback to handle response from twitch
  */
 async function fetchStreamData(streamIdentifiers, callback) {
     let request = 'streams'; //API endpoint for twitch
+    let requestParams = [];
 
-    //If ID is given use the ID
-    if (streamIdentifiers.id) {
-        request = addParam(request, ["user_id", streamIdentifiers.id]);
-    } else if (streamIdentifiers.login) { //When only name is given, use the name
-        request = addParam(request, ["user_login", streamIdentifiers.login]);
-    } else {
-        throw new Error('No identifier for user given (e.g. id or login)');
+     if (streamIdentifiers.length < 1) {
+         throw new Error('No users given');
     }
+
+    //Add login to streamer names so request can be built properly
+    streamIdentifiers.forEach(streamer => {
+        requestParams[requestParams.length] = ["user_login", streamer];
+        // --> [["login","princesspaperplane"],["login","dirtymerry"]]
+    });
+
+     request = addParam(request, requestParams);
 
     if (callback && typeof callback == 'function') {
         return await fetchData(request, callback);
@@ -104,19 +111,22 @@ async function fetchData(
 /**
  * Add parameter to existing request string
  * @param {String} request 
- * @param {string[]} param Arrays that contain paris of parameter key and value (e.g. name + <name>)
+ * @param {Object[][]} param Arrays that contain paris of parameter key and value ([[key1,value1],[key2,value2]])
  * @returns {string} Concatinated request string
  * */
-function addParam(request, ...param) {
+function addParam(request, param) {
+    
+    request += `?${param[0][0]}=${param[0][1]}`; //First symbol has to be '?'
+    for (let i = 1; i < param.length; i++) { //After that each addition has a leading '&'
+        request += `&${param[i][0]}=${param[i][1]}`; //e.g. streams?user_login=aspen        
+    }
 
-    param.forEach((value) => {
-        request += ('?' + value[0] + '=' + value[1]);
-    });
-    return request;
+    return request; //Should be something like api.twitch/helix/streams?user_login=xxxx?user_login=xxxxx
 }
 
 //##########################
-/*
-fetchStreamData({ login: 'princesspaperplane' }, () => {
-    console.log("Hello");
-});*/
+
+/*let a = fetchStreamData(["dirtymerry", "budgetmonk119", "xqcow"]);
+a.then(result => {
+    console.log(result);
+})*/

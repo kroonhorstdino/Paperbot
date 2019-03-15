@@ -8,8 +8,8 @@
         "prefix": "p?",
         "announceStreams": true,
         "announceChannelIDs": [
-            "488392236086591488"
+            "488392299764514816"
         ],
-        "announceMessage": "An alle @here! princesspaperplane ist wieder online auf Twitch!"
+        "announceMessage": "An alle @here! %user_name ist wieder online auf Twitch!"
     }   
 }

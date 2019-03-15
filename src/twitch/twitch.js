@@ -1,8 +1,9 @@
 const chalk = require("chalk");
 const twitch_api = require("./twitch_api.js");
+const Database = require('../db/database.js');
 
 module.exports = {
-    isStreamOnline: isStreamOnline
+    updateOnlineStreams: updateOnlineStreams
 }
 
 /**
@@ -12,17 +13,13 @@ module.exports = {
  */
 
 /**
- * Checks if stream is online
+ * Gets streams that went online since last update and updates database
  * 
  * @async 
- * @param {Object} streamIdentifiers Possible identifiers for stream
- * @param {string} streamIdentifiers.login Login name of streamer
- * @param {string} streamIdentifiers.id ID of streamer
- * @returns {Boolean, Object} If stream is online or not and the API response
  */
-async function isStreamOnline(streamIdentifiers) {
+async function updateOnlineStreams() {
 
-    let isNowOnline = false;
+    Database.connect();
 
     let date = new Date(Date.now());
     var options = {
@@ -36,20 +33,66 @@ async function isStreamOnline(streamIdentifiers) {
         hourCycle: 'h24',
     };
 
-    console.log(`Status checked at: ${date.toLocaleDateString('de-DE', options)}`);
+    let localStreamersData = await Database.getAnnouncementStreamersStatus();
+    let streamers_user_login = [];
 
-    let response = await twitch_api.fetchStreamData(streamIdentifiers);
+    let changedStreamerData = []; //Data to update database
+    let newOnlineStreamers = []; //Data for annoucement method ["name", "name"]
+    
+    //Put only names in array to send to twitch API
+    localStreamersData.forEach(pair => {
+        streamers_user_login.push(pair.user_login);
+    })
 
-    //When data is empty, there is no stream online
-    if (response.data.data.length == 0) {
-        //not online
-        isNowOnline = false;
-    } else {
-        isNowOnline = true;
+    let twitchRes = await twitch_api.fetchStreamData(streamers_user_login); //Get all streams that are online
+
+    //Go through all streamers in the database
+    for(let localStreamer of localStreamersData) {
+        let streamerIsOnline = false;
+        
+        //Go through all online streams
+        for (let onlineStreamerData of twitchRes.data.data) {
+            //Stream went online or is still online
+            if (localStreamer.user_login == (onlineStreamerData.user_name).toLowerCase()) {
+                streamerIsOnline = true; //Stream is online
+
+                if (localStreamer.isOnline == false) { //Stream went online since last update
+                    changedStreamerData.push({
+                        user_login: localStreamer.user_login,
+                        isOnline: true
+                    }); //Document change to online status
+                    newOnlineStreamers.push({
+                        user_login: localStreamer.user_login,
+                        onlineStreamerData: onlineStreamerData
+                    })
+                }
+                continue;
+            }
+        }
+
+        //When stream was not found but is still locally shown as online
+        if (!streamerIsOnline && localStreamer.isOnline) {
+            changedStreamerData.push({
+                user_login: localStreamer.user_login,
+                isOnline: false
+            }); //Document change to offline status
+        }
     }
 
-    return {isNowOnline, response};
+    changedStreamerData.forEach(changedStreamerData => {
+        Database.updateOnlineStatus(changedStreamerData);
+    });
+
+    console.log(`Status updated at: ${date.toLocaleDateString('de-DE', options)}`);
+
+    //Return new streams with data
+    return newOnlineStreamers;
 }
+
+/*
+Database.connect();
+updateOnlineStreams();*/
+
 
 /*
 function testTwitchOnline() {

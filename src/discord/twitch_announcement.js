@@ -9,7 +9,7 @@ const channels = require("../discord/channels.js");
 
 const config = require("../../config.json");
 
-module.exports = class TwitchAnnouncement {
+class TwitchAnnouncement {
 
     constructor() {
         autoBind(this);
@@ -81,32 +81,11 @@ module.exports = class TwitchAnnouncement {
      * @private
      */
     async checkStreamStatus() {
-        let {
-            isNowOnline,
-            response
-        } = await twitch.isStreamOnline({
-            login: 'xqcow'
-        });
 
-        if (!isNowOnline) { //Streamer now online
+        let newOnlineStreamers = await twitch.updateOnlineStreams();
 
-            if (this.isOnline) { //Went online
-                console.log("PrincessPaperplane ist offline gegangen!");
-                console.log(response);
-                this.isOnline = false;
-
-                this.changeStreamCheckStatusInterval(config.twitch.updateIntervalWhenOffline);
-            }
-        } else { //Streamer now online
-            if (!this.isOnline) { //Went offline
-                console.log("PrincessPaperplane ist online gegangen!");
-                console.log(response);
-                this.isOnline = true;
-
-                await this.announceStream(response);
-
-                this.changeStreamCheckStatusInterval(config.twitch.updateIntervalWhenOnline);
-            }
+        for (let streamerData of newOnlineStreamers) {
+            await this.announceStream(streamerData);
         }
     }
 
@@ -117,12 +96,22 @@ module.exports = class TwitchAnnouncement {
      * @private
      * @param {Object} response Response given by Twitch API
      */
-    async announceStream(response) {
-        let streamerURL = `https://www.twitch.tv/${response.data.data[0].user_name}`;
+    async announceStream({ user_login, onlineStreamerData }) {
+        console.log(`Announcing ${user_login}`);
+
+        let streamerURL = `https://www.twitch.tv/${user_login}`;
         let message = config.discord.announceMessage;
+        message = message.replace(/%user_name/gi, onlineStreamerData.user_name);
 
         await channels.applyToChannels(config.discord.announceChannelIDs, channel => {
             channel.send(message + " " + streamerURL);
         });
     }
 }
+
+/*
+let a = new TwitchAnnouncement();
+let b = () => { a.checkStreamStatus(); }
+b();*/
+
+module.exports = TwitchAnnouncement;

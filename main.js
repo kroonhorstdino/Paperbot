@@ -3,6 +3,7 @@ global.__basedir = __dirname;
 const chalk = require("chalk");
 
 const Discord = require("discord.js");
+
 global._client = new Discord.Client();
 
 /**
@@ -14,6 +15,8 @@ const secret = require('./secret.json');
 /**
  * BOT MODULES
  */
+const Database = require('./src/db/database.js');
+
 const Commands = require("./src/discord/commands.js");
 const commands = new Commands();
 
@@ -28,12 +31,16 @@ let coroutineID;
 global._client.on('ready', () => {
     console.log(`Connected under name ${global._client.user.tag}`);
 
+    Database.connect();
     //Check streamer statusses
     announcer.initCheckStreamStatus();
 });
 
 global._client.on('message', (msg) => {
-    commands.handleCommand(msg);
+    if (msg.content == 'p?updateStream') {
+        announcer.checkStreamStatus();
+    }
+    //commands.handleCommand(msg);
 });
 
 global._client.on('disconnect', (event) => {

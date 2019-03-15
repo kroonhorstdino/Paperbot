@@ -3,8 +3,7 @@
     // Zeigen Sie auf vorhandene Attribute, um die zugehörigen Beschreibungen anzuzeigen.
     // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": [
-        {
+    "configurations": [{
             "type": "node",
             "request": "launch",
             "name": "Launch mainjs",
@@ -13,8 +12,26 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/src\\twitch_utility\\twitch_api.js"
+            "name": "Launch twitch_announcement.js",
+            "program": "${workspaceFolder}/src\\discord\\twitch_announcement.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch twitch.js",
+            "program": "${workspaceFolder}/src\\twitch\\twitch.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Database.js",
+            "program": "${workspaceFolder}/src\\db\\database.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch twitch_api.js",
+            "program": "${workspaceFolder}/src\\twitch\\twitch_api.js"
         }
     ]
 }
