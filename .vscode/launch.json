@@ -3,35 +3,30 @@
     // Zeigen Sie auf vorhandene Attribute, um die zugehörigen Beschreibungen anzuzeigen.
     // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": [{
+    "configurations": [
+        {
             "type": "node",
             "request": "launch",
-            "name": "Launch mainjs",
-            "program": "${workspaceFolder}/main.js"
+            "name": "Launch Production",
+            "program": "${workspaceFolder}/main.js",
+            "args": [
+                "-production"
+            ]
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch twitch_announcement.js",
-            "program": "${workspaceFolder}/src\\discord\\twitch_announcement.js"
+            "name": "Launch Debug",
+            "program": "${workspaceFolder}/main.js",
+            "args": [
+                "-debug"
+            ]
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch twitch.js",
-            "program": "${workspaceFolder}/src\\twitch\\twitch.js"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Database.js",
-            "program": "${workspaceFolder}/src\\db\\database.js"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch twitch_api.js",
-            "program": "${workspaceFolder}/src\\twitch\\twitch_api.js"
+            "name": "Launch this file",
+            "program": "${file}"
         }
     ]
 }

@@ -19,8 +19,6 @@ module.exports = {
  */
 async function updateOnlineStreams() {
 
-    Database.connect();
-
     let date = new Date(Date.now());
     var options = {
         weekday: 'long',
@@ -38,11 +36,8 @@ async function updateOnlineStreams() {
 
     let changedStreamerData = []; //Data to update database
     let newOnlineStreamers = []; //Data for annoucement method ["name", "name"]
-    
-    //Put only names in array to send to twitch API
-    localStreamersData.forEach(pair => {
-        streamers_user_login.push(pair.user_login);
-    })
+
+    streamers_user_login = localStreamersData.map(pair => pair.user_login)
 
     let twitchRes = await twitch_api.fetchStreamData(streamers_user_login); //Get all streams that are online
 

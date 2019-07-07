@@ -5,6 +5,11 @@ const autoBind = require("auto-bind");
 
 class Database {
 
+    /**
+     *
+     * @returns {pg.Client}
+     * @memberof Database
+     */
     get db() {
         return Database.db;
     }
@@ -24,6 +29,10 @@ class Database {
 
         this.db = new pg.Client(connectionString);
         await this.db.connect();        
+    }
+
+    static async end() {
+        await this.db.end();
     }
 
     static addAnnouncementStreamer({
@@ -55,6 +64,10 @@ class Database {
         return "SELECT user_login FROM public.streamers";
     }
 
+    static getAnnouncementStreamersQuery() {
+        return "SELECT user_login, \"isOnline\" FROM public.streamers";
+    }
+
     /**
      *
      *
@@ -63,7 +76,7 @@ class Database {
      * @returns [{user_login : string, isOnline : boolean}]
      */
     static async getAnnouncementStreamersStatus() {
-        let result = await Database.db.query(Database.getAnnouncementStreamersQuery);
+        let result = await Database.db.query(Database.getAnnouncementStreamersQuery());
         return result.rows;
     }
 
@@ -87,10 +100,5 @@ class Database {
 * @static
 */
 Database.db = {};
-
-Database.getAnnouncementStreamersQuery = {
-    name: "announcementStreamersQuery",
-    text: "SELECT user_login, \"isOnline\" FROM streamers"
-}
 
 module.exports = Database;

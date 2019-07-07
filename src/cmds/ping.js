@@ -1,24 +1,28 @@
 const Discord = require("discord.js");
+const config = require('../../config.json')
 
-module.exports = {
+module.exports = class Ping {
 
     /**
      *  Replies to a ping with a pong
      *
      * @param {Discord.Message} msg Message that ping is supposed to reply to
      */
-    execute: (msg) => {
-        msg.channel.send("@here PONG! 🏓");
-    },
+    static async execute(msg, content) {
+        await msg.reply("PONG! 🏓");
+    }
 
-    aliases: [
-        "ping",
-        "p",
-        "pg",
-    ],
+    static get aliases() {
+        return [
+            "ping",
+            "p",
+            "pg",
+        ]
+    };
 
-    isEnabled: true,
+    static get isEnabled() {
+        return config.enabledCommand.ping;
+    }
 
-    help: () => {
-    },
+    static help() {}
 }

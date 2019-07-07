@@ -1,0 +1,53 @@
+
+
+module.exports = class <CommandName> {
+
+    static async execute(msg, content) {
+
+    }
+
+    static async ....
+        Command execution sub functions
+    
+    static get aliases() {
+        return [
+            'alias',
+            'alias',
+            'alias'
+        ]
+    }
+
+    static get permissions() {
+        return {
+            set1: ['SEND_MESSAGE']
+            set2: [...],
+            set3: [...]
+        }
+    }
+
+    static get isEnabled() {
+        return config.enabledCommand.<CommandName>
+    }
+
+    static help () {
+        return {
+            cmdName: this.aliases,
+            cmdDescription: "description",
+            arguments: [
+                ["arg1", "descr"],
+                ["arg2, "descr"]
+            ],
+            example: "How to use"
+        }
+    }
+
+    static error(msg, errorString) {
+        switch (errorString) {
+            case "error":
+                msg.reply("Message")
+                break;
+            default:
+                break;
+        }
+    }
+}

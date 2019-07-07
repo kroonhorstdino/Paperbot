@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const config = require('../../config.json')
 
 module.exports = {
 
@@ -7,7 +8,7 @@ module.exports = {
      *
      * @param {Discord.Message} msg Message by user
      */
-    execute: (msg) => {
+    execute: (msg, content) => {
         msg.channel.send("Twitch command placeholder");
     },
 
@@ -16,7 +17,7 @@ module.exports = {
         "twitch",
     ],
 
-    isEnabled: false,
+    isEnabled: config.enabledCommand.twitch,
 
     help: () => {},
 }

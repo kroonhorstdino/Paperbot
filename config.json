@@ -1,15 +1,35 @@
 {
     "twitch": {
+        "enableUpdate": false,
         "updateIntervalWhenOffline": 30000,
         "updateIntervalWhenOnline": 60000
     },
     "discord": {
         "permissionIinteger": 3656769,
-        "prefix": "p?",
-        "announceStreams": true,
+        "production_prefix": "p?",
+        "debug_prefix": "deb?",
+        "announceStreams": false,
         "announceChannelIDs": [
             "488392299764514816"
         ],
-        "announceMessage": "An alle @here! %user_name ist wieder online auf Twitch!"
-    }   
+        "announceMessage": "An alle @here! %user_name ist wieder online auf Twitch!",
+        "announce": {
+
+        },
+        "help": {
+            "helpStrings": ["help", "h", "-help", "-h"],
+            "embedFooter": "Help embed for commands"
+        },
+        "poll": {
+            "messageTitle": "❓❓ *Poll* ❓❓",
+            "embedFooter": "Paperbot poll"
+        }
+    },
+    "enabledCommand": {
+        "help": true,
+        "poll": true,
+        "ping": true,
+        "suggest": false,
+        "twitch": false
+    }
 }
