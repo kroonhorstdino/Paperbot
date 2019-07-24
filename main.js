@@ -63,7 +63,7 @@ global._client.on('ready', async () => {
         }
     }
 
-    PollHandler.collectPolls();
+    //PollHandler.collectPolls();
 
 });
 
@@ -127,10 +127,10 @@ const endConnection = (code) => {
     process.exit(code);
 }
 
-if (process.argv[2] == "-debug") {
+if (process.env.NODE_ENV == "debug") {
     global._client.login(secret.discord.debug_token); //DEBUG MODE
     console.log("-->LAUNCHING IN DEBUG MODE!<--")
-} else if (process.argv[2] == "-prodcution") {
+} else if (process.env.NODE_ENV == "prodcution") {
     global._client.login(secret.discord.production_token); //PRODUCTIO MODE
 } else {
     console.log("Nothing happened :(");

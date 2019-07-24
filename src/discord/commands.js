@@ -11,7 +11,7 @@ module.exports = class Commands {
     constructor() {
         this.commandFiles = [];
         this.collectCommandFiles();
-        this.prefix = (process.argv[2] == "-debug") ? config.discord.debug_prefix : config.discord.production_prefix;
+        this.prefix = (process.env.NODE_ENV == "debug") ? config.discord.debug_prefix : config.discord.production_prefix;
     }
 
     /**
